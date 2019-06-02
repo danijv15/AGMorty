@@ -14,59 +14,79 @@ function RandEntre(min,max) // min and max included
     return Math.floor(Math.random()*(max-min+1)+min);
 }
 
-/** classes para morty */
+/** clase para nodo morty */
 class CyberMorty
 {
-    //NUMERO DE MORTYS
-    numbero:number;
+    id:number=0;
+    salud:number=-1;
+    fuerza:number=-1;
+    resistencia:number=-1;
+    inteligencia:number=-1;
 
-    //ESTADISTICAS DEL MORTY
-    salud:number=15;
-    fuerza:number;
-    resistencia:number;
-    inteligencia:number;
+    inventario:number;
+    Eventos:number;
 
-    //VECTORES CON INFORMACION DE CADA MORTY
-    inventario:string[]=[];
-    Eventos:string[]=[];
+    
 
-    //VECTORES CON MORTYS
-    genAct:string[]=[];
-    genSig:string[]=[];
+}
 
-    constructor(n:number, salud:number, fuerza:number, resistencia:number, inteligencia:number)
+/** clase para el nodo inventario */
+class Inventario
+{
+
+}
+
+/** clase para nodo eventos */
+class Eventos
+{
+
+}
+
+
+class Genetico
+{
+    /**Variables de cantidad*/
+    nPoblacion:number;
+    nObstaculos:number;
+
+    /** listas de inventarios, eventos e individuos */
+    listaInventario:Inventario[]=[];
+    listaEventos:Eventos[]=[];
+
+    genAct:CyberMorty[]=[];
+    genSig:CyberMorty[]=[];
+    mejores:CyberMorty[]=[];
+
+    constructor(n:number)
     {
-        this.numbero=n;
-        this.salud=salud;
-        this.fuerza=fuerza;
-        this.resistencia=resistencia;
-        this.inteligencia=inteligencia;
-
-        // ***FALTA LLENAR INVENTARIO***
-
-        // ***FALTA LLENAR EVENTOS***
-
+        this.nPoblacion=n;
 
     }
 
+    /** LLenar el vector de Inventario*/
+    llenarInventarioMorty()
+    {
+        //***FALTA***
+    }
+
+    /** LLenar el vector de Eventos*/
     llenarEventosMorty()
     {
         //***FALTA***
     }
 
-
-    /** generacion inicial*/
+    /** Generacion inicial*/
     GenCero()
     {
-        for (let  i =0; i<this.numbero;i++)
+        for (let  i =0; i<this.nPoblacion;i++)
         {
-           //SE USAN VALORES ENTRE 0 Y 10 EN TODAS LAS STATS
-            let nSalud = RandEntre(0,10-1);
-            let nFuerza = RandEntre(0,10-1);
-            let nResistencia = RandEntre(0,10-1);
-            let nInteligencia = RandEntre(0,10-1)
-            let nuevo = new CyberMorty(i, nSalud, nFuerza, nResistencia, nInteligencia);
-            this.genAct.push(nuevo.toString());
+            let nuevo = new CyberMorty();
+            //SE USAN VALORES ENTRE 0 Y 10 EN TODAS LAS STATS
+            nuevo.salud = RandEntre(0,10-1);
+            nuevo.fuerza = RandEntre(0,10-1);
+            nuevo.resistencia = RandEntre(0,10-1);
+            nuevo.inteligencia = RandEntre(0,10-1);
+            this.genAct.push(nuevo);
         }
     }
 
@@ -77,8 +97,128 @@ class CyberMorty
         //***FALTA***
     }
 
+    /** cruzar los Mortys y guardarlos en genSig*/
+    cruzar( nCruces:number)
+    {
 
-}
+        let padre:number;
+        let madre:number;
+        for (let i = 0; i< nCruces;i++)
+        {
+            // nuevo individuo
+            let nuevo=new CyberMorty();
+
+            // se escojen 2 padres aleatorios
+            padre=RandEntre(0,this.nPoblacion-1);
+            madre= RandEntre(0,this.nPoblacion-1);
+
+            nuevo.salud = this.genAct[padre].salud;
+            nuevo.fuerza = this.genAct[madre].fuerza;
+            nuevo.resistencia = Math.floor((this.genAct[padre].resistencia+this.genAct[madre].resistencia)/2);
+            nuevo.inteligencia = Math.floor((this.genAct[padre].inteligencia+this.genAct[madre].inteligencia)/2);
+
+            this.genSig.push(nuevo);
+        }
+    }
+
+    /** muta cierta cantidad de Mortys **/
+    mutar(nMutaciones:number)
+    {
+
+        let j;// para escoger un individuo
+
+        for (let i:number = 0; i< nMutaciones; i++)
+        {
+            // nuevo individuo mutado
+            let nuevo= new CyberMorty();
+
+
+            j= RandEntre(0,this.nPoblacion-1);
+
+            /** genera una mutación del 10% en salud **/
+            if(RandEntre(0,1) && Math.floor(this.genAct[j].salud*1.10) < 10)// 10 es el valor maximo
+            {
+                nuevo.salud= Math.floor(this.genAct[j].salud*1.10);
+            }
+            else
+            {
+                nuevo.salud= Math.floor(this.genAct[j].salud*0.9);
+            }
+
+            /** genera una mutación del 10% en fuerza **/
+            if(RandEntre(0,1) && Math.floor(this.genAct[j].fuerza*1.10) < 10)// 10 es el valor maximo
+            {
+                nuevo.fuerza= Math.floor(this.genAct[j].fuerza*1.10);
+            }
+            else
+            {
+                nuevo.fuerza= Math.floor(this.genAct[j].fuerza*0.9);
+            }
+
+
+            /** genera una mutación del 10% en resistencia**/
+            if(RandEntre(0,1) && Math.floor(this.genAct[j].resistencia*1.10) < 10)// 10 es el valor maximo
+            {
+                nuevo.resistencia= Math.floor(this.genAct[j].resistencia*1.10);
+            }
+            else
+            {
+                nuevo.resistencia= Math.floor(this.genAct[j].resistencia*0.9);
+            }
+
+            /** genera una mutación del 10% en inteligencia**/
+            if(RandEntre(0,1) && Math.floor(this.genAct[j].inteligencia*1.10) < 10)// 10 es el valor maximo
+            {
+                nuevo.inteligencia= Math.floor(this.genAct[j].inteligencia*1.10);
+            }
+            else
+            {
+                nuevo.inteligencia= Math.floor(this.genAct[j].inteligencia*0.9);
+            }
+
+            this.genSig.push(nuevo);
+        }
+
+    }
+
+    /** método que selecciona lo que tienen estadisticas mas bajas **/
+    chapas(nChapas)
+    {
+        //***FALTA***
+    }
+
+
+    /**
+     * Mejorar la forma de seleccion para tener la lista de mejores lo más llena posible. Primero viendo si hay dummies y si no hay entonces si remplazas
+     */
+    SeleccionarMejores()
+    {
+        //***FALTA***
+    }
+
+
+    limpiarGenSig()
+    {
+        for( let individuo in this.genSig)
+        {
+            individuo= undefined;
+        }
+        this.genSig=[];
+    }
+
+    imprimirMejores()
+    {
+        //***FALTA***
+    }
+
+
+    CalcularPuntos( cruces:number, mutaciones:number,  chapas:number, generaciones:number)
+    {
+       ///***FALTA***
+    }
+
+
+};
 
 function PonerMorty(indice:number, morty:CyberMorty)
 {
@@ -122,17 +262,10 @@ function PonerMorty(indice:number, morty:CyberMorty)
     }
     let eventos="<li class='list-group-item'><h6 class='card-title'>Eventos</h6><ul>"+evnts+"</ul></li></ul>";
 
-    let card="<div class='card mb-3' style='max-width: 540px;' > <h5 class='card-title'>CyberMorty "+morty.numbero+"</h5>"+estadisticas+inventario+eventos;
+    let card="<div class='card mb-3' style='max-width: 540px;' > <h5 class='card-title'>CyberMorty "+morty.id+"</h5>"+estadisticas+inventario+eventos;
 
     div.innerHTML= card;
 }
-
-
-
-
-
-
-
 
 
 /*Inicio de helicoptero  MI PARTEEEEEE*/
@@ -415,7 +548,7 @@ class Genetico
                     this.mejores[i].y= this.genAct[this.listResultados[a].indice ].y;
                     this.mejores[i].r= this.genAct[this.listResultados[a].indice ].r;
                     this.mejores[i].obst= this.listResultados[a].obt;
-                    
+
                     console.log("Candidado ("+this.mejores[i].x+", "+this.mejores[i].y+") r: "+ this.mejores[i].r+" obst: "+this.mejores[i].obst);
                 }
 
@@ -488,7 +621,7 @@ class Genetico
                 console.log("CalcularPuntos->GenAct");
                 console.log(this.genAct);
             }*/
-            
+
             // Se eliminan los viejos individuos
             this.limpiarGenSig();
 
@@ -510,11 +643,12 @@ class Genetico
 
 function main()
 {
-    let salud = 7;
-    let fuerza=10;
-    let inteligencia=3;
-    let resistencia=5;
-    let CyMort= new CyberMorty(20, salud, fuerza, resistencia, inteligencia);
+    let CyMort= new CyberMorty();
+    CyMort.salud = 7;
+    CyMort.fuerza=10;
+    CyMort.inteligencia=3;
+    CyMort.resistencia=5;
+
     CyMort.inventario.push("ropa");
     CyMort.inventario.push("lanza");
 
