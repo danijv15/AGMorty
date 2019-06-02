@@ -1,7 +1,81 @@
 /*import * as Collections from 'typescript-collections';*/
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+      if ((new Date().getTime() - start) > milliseconds){
+        break;
+      }
+    }
+}
+
+
+
 function RandEntre(min,max) // min and max included
 {
     return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+/** classes para morty */
+class CyberMorty
+{
+    numbero:number;
+    salud:number=15;
+    fuerza:number;
+    resistencia:number;
+    inteligencia:number;
+    inventario:string[]=[];
+    Eventos:string[]=[];
+    constructor(n:number)
+    {
+        this.numbero=n;
+    }
+}
+
+function PonerMorty(indice:number, morty:CyberMorty)
+{
+    let fila= Math.floor(indice/3)+1;
+    let columna:number = indice%3
+    if (columna==0)
+    {
+        columna= 3;
+    } 
+
+    /** transicion de espera */
+    let div = document.getElementById(fila+"-"+columna);
+    div.innerHTML="<div class='spinner-grow' role='status'> <span class='sr-only'>Loading...</span> </div>";
+
+    sleep(700);
+
+    /** imagen y estadisticas */
+    let img="<div class='col-md-4'><img src='img/cyborg-m.svg' class='card-img' alt='Cyborg'></div>";
+    let estadisticasInicio="<div class='col-md-8'><div class='card-body'><ul>";
+    let estadisticasFinal="<ul></div></div></div>";
+
+    let salud= "<li>Salud: "+morty.salud+"</li>";
+    let fuerza= "<li>fuerza: "+morty.fuerza+"</li>";
+    let resistencia= "<li>Resistencia: "+morty.resistencia+"</li>";
+    let inteligencia= "<li>Inteligencia: "+morty.inteligencia+"</li>";
+    
+    let estadisticas="<div class='row no-gutters'>"+img+estadisticasInicio+salud+fuerza+resistencia+inteligencia+estadisticasFinal;
+    /** Inventario */
+    let objetos="";
+    for(let objeto of morty.inventario)
+    {
+        objetos+=objeto+",";
+    }
+    let inventario= "<ul class='list-group list-group-flush'><li class='list-group-item'><h6 class='card-title'>Inventario</h6><p>"+objetos+"</p></li>";
+
+    /** Eventos */
+    let evnts="";
+    for(let even of morty.Eventos)
+    {
+        evnts+="<li>"+even+"</li>";
+    }
+    let eventos="<li class='list-group-item'><h6 class='card-title'>Eventos</h6><ul>"+evnts+"</ul></li></ul>";
+
+    let card="<div class='card mb-3' style='max-width: 540px;' > <h5 class='card-title'>CyberMorty "+morty.numbero+"</h5>"+estadisticas+inventario+eventos;
+
+    div.innerHTML= card;
 }
 
 
@@ -377,12 +451,22 @@ class Genetico
 
 function main()
 {
-    return "hola que hace :D";
+    let CyMort= new CyberMorty(20);
+    CyMort.fuerza=15;
+    CyMort.inteligencia=3;
+    CyMort.resistencia=5;
+    CyMort.inventario.push("ropa");
+    CyMort.inventario.push("lanza");
+    CyMort.Eventos.push("Saludo a un lobo y este lo mordió");
+    CyMort.Eventos.push("Llamo a la llama que llama");
+
+    PonerMorty(2,CyMort);
 }
 
-var contenido = main();
+/*var contenido = main();
 var contenedor = document.getElementById('contenedor-1');
 contenedor.innerHTML= main();
 alert("inicio de programa");
 var G= new Genetico(50,15,1,100,100,10);
-G.CalcularPuntos(35,10,5,60);
+G.CalcularPuntos(35,10,5,60);*/
+

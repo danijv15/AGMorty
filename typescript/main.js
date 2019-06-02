@@ -1,9 +1,62 @@
 /*import * as Collections from 'typescript-collections';*/
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds) {
+            break;
+        }
+    }
+}
 function RandEntre(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
-/*Inicio de Morty*/
+/** classes para morty */
+var CyberMorty = /** @class */ (function () {
+    function CyberMorty(n) {
+        this.salud = 15;
+        this.inventario = [];
+        this.Eventos = [];
+        this.numbero = n;
+    }
+    return CyberMorty;
+}());
+function PonerMorty(indice, morty) {
+    var fila = Math.floor(indice / 3) + 1;
+    var columna = indice % 3;
+    if (columna == 0) {
+        columna = 3;
+    }
+    /** transicion de espera */
+    var div = document.getElementById(fila + "-" + columna);
+    div.innerHTML = "<div class='spinner-grow' role='status'> <span class='sr-only'>Loading...</span> </div>";
+    sleep(700);
+    /** imagen y estadisticas */
+    var img = "<div class='col-md-4'><img src='img/cyborg-m.svg' class='card-img' alt='Cyborg'></div>";
+    var estadisticasInicio = "<div class='col-md-8'><div class='card-body'><ul>";
+    var estadisticasFinal = "<ul></div></div></div>";
+    var salud = "<li>Salud: " + morty.salud + "</li>";
+    var fuerza = "<li>fuerza: " + morty.fuerza + "</li>";
+    var resistencia = "<li>Resistencia: " + morty.resistencia + "</li>";
+    var inteligencia = "<li>Inteligencia: " + morty.inteligencia + "</li>";
+    var estadisticas = "<div class='row no-gutters'>" + img + estadisticasInicio + salud + fuerza + resistencia + inteligencia + estadisticasFinal;
+    /** Inventario */
+    var objetos = "";
+    for (var _a = 0, _b = morty.inventario; _a < _b.length; _a++) {
+        var objeto = _b[_a];
+        objetos += objeto + ",";
+    }
+    var inventario = "<ul class='list-group list-group-flush'><li class='list-group-item'><h6 class='card-title'>Inventario</h6><p>" + objetos + "</p></li>";
+    /** Eventos */
+    var evnts = "";
+    for (var _c = 0, _d = morty.Eventos; _c < _d.length; _c++) {
+        var even = _d[_c];
+        evnts += "<li>" + even + "</li>";
+    }
+    var eventos = "<li class='list-group-item'><h6 class='card-title'>Eventos</h6><ul>" + evnts + "</ul></li></ul>";
+    var card = "<div class='card mb-3' style='max-width: 540px;' > <h5 class='card-title'>CyberMorty " + morty.numbero + "</h5>" + estadisticas + inventario + eventos;
+    div.innerHTML = card;
+}
+/*Inicio de helicoptero */
 /** nodo para par ordenado xy **/
 var xy = /** @class */ (function () {
     function xy() {
@@ -176,6 +229,9 @@ var Genetico = /** @class */ (function () {
             this.genSig.push(nuevo);
         }
     };
+    /**
+     * Mejorar la forma de seleccion para tener la lista de mejores lo más llena posible. Primero viendo si hay dummies y si no hay entonces si remplazas
+     */
     Genetico.prototype.SeleccionarMejores = function () {
         var r;
         var i;
@@ -253,11 +309,19 @@ var Genetico = /** @class */ (function () {
 ;
 /* Fin de helicoptero */
 function main() {
-    return "hola que hace :D";
+    var CyMort = new CyberMorty(20);
+    CyMort.fuerza = 15;
+    CyMort.inteligencia = 3;
+    CyMort.resistencia = 5;
+    CyMort.inventario.push("ropa");
+    CyMort.inventario.push("lanza");
+    CyMort.Eventos.push("Saludo a un lobo y este lo mordió");
+    CyMort.Eventos.push("Llamo a la llama que llama");
+    PonerMorty(2, CyMort);
 }
-var contenido = main();
+/*var contenido = main();
 var contenedor = document.getElementById('contenedor-1');
-contenedor.innerHTML = main();
+contenedor.innerHTML= main();
 alert("inicio de programa");
-var G = new Genetico(50, 15, 1, 100, 100, 10);
-G.CalcularPuntos(35, 10, 5, 60);
+var G= new Genetico(50,15,1,100,100,10);
+G.CalcularPuntos(35,10,5,60);*/
