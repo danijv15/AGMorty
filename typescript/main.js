@@ -29,7 +29,7 @@ function PonerMorty(indice, morty) {
     /** transicion de espera */
     var div = document.getElementById(fila + "-" + columna);
     div.innerHTML = "<div class='spinner-grow' role='status'> <span class='sr-only'>Loading...</span> </div>";
-    sleep(700);
+    //sleep(1000);
     /** imagen y estadisticas */
     var img = "<div class='col-md-4'><img src='img/cyborg-m.svg' class='card-img' alt='Cyborg'></div>";
     var estadisticasInicio = "<div class='col-md-8'><div class='card-body'><ul>";
@@ -309,6 +309,9 @@ var Genetico = /** @class */ (function () {
 ;
 /* Fin de helicoptero */
 function main() {
+    var div = document.getElementById(1 + "-" + 2);
+    div.innerHTML = "<div class='bg-dark' role='status'> </div>";
+    sleep(500);
     var CyMort = new CyberMorty(20);
     CyMort.fuerza = 15;
     CyMort.inteligencia = 3;

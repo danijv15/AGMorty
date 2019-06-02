@@ -44,7 +44,7 @@ function PonerMorty(indice:number, morty:CyberMorty)
     let div = document.getElementById(fila+"-"+columna);
     div.innerHTML="<div class='spinner-grow' role='status'> <span class='sr-only'>Loading...</span> </div>";
 
-    sleep(700);
+    //sleep(1000);
 
     /** imagen y estadisticas */
     let img="<div class='col-md-4'><img src='img/cyborg-m.svg' class='card-img' alt='Cyborg'></div>";
