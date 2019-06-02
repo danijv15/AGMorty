@@ -9,7 +9,6 @@ function sleep(milliseconds) {
 }
 
 
-
 function RandEntre(min,max) // min and max included
 {
     return Math.floor(Math.random()*(max-min+1)+min);
@@ -18,17 +17,67 @@ function RandEntre(min,max) // min and max included
 /** classes para morty */
 class CyberMorty
 {
+    //NUMERO DE MORTYS
     numbero:number;
+
+    //ESTADISTICAS DEL MORTY
     salud:number=15;
     fuerza:number;
     resistencia:number;
     inteligencia:number;
+
+    //VECTORES CON INFORMACION DE CADA MORTY
     inventario:string[]=[];
     Eventos:string[]=[];
-    constructor(n:number)
+
+    //VECTORES CON MORTYS
+    genAct:string[]=[];
+    genSig:string[]=[];
+
+    constructor(n:number, salud:number, fuerza:number, resistencia:number, inteligencia:number)
     {
         this.numbero=n;
+        this.salud=salud;
+        this.fuerza=fuerza;
+        this.resistencia=resistencia;
+        this.inteligencia=inteligencia;
+
+        // ***FALTA LLENAR INVENTARIO***
+
+        // ***FALTA LLENAR EVENTOS***
+
+
     }
+
+    llenarEventosMorty()
+    {
+        //***FALTA***
+    }
+
+
+    /** generacion inicial*/
+    GenCero()
+    {
+        for (let  i =0; i<this.numbero;i++)
+        {
+           //SE USAN VALORES ENTRE 0 Y 10 EN TODAS LAS STATS
+            let nSalud = RandEntre(0,10-1);
+            let nFuerza = RandEntre(0,10-1);
+            let nResistencia = RandEntre(0,10-1);
+            let nInteligencia = RandEntre(0,10-1)
+            let nuevo = new CyberMorty(i, nSalud, nFuerza, nResistencia, nInteligencia);
+            this.genAct.push(nuevo.toString());
+        }
+    }
+
+
+    /** aptitud de la gen actual **/
+    calcularAptitud()
+    {
+        //***FALTA***
+    }
+
+
 }
 
 function PonerMorty(indice:number, morty:CyberMorty)
@@ -79,7 +128,14 @@ function PonerMorty(indice:number, morty:CyberMorty)
 }
 
 
-/*Inicio de helicoptero */
+
+
+
+
+
+
+
+/*Inicio de helicoptero  MI PARTEEEEEE*/
 
 /** nodo para par ordenado xy **/
 class xy
@@ -103,6 +159,9 @@ class resultados
     obt:number=-1;
     indice:number=-1;
 };
+
+
+
 
 class Genetico
 {
@@ -451,12 +510,14 @@ class Genetico
 
 function main()
 {
-    let CyMort= new CyberMorty(20);
-    CyMort.fuerza=15;
-    CyMort.inteligencia=3;
-    CyMort.resistencia=5;
+    let salud = 7;
+    let fuerza=10;
+    let inteligencia=3;
+    let resistencia=5;
+    let CyMort= new CyberMorty(20, salud, fuerza, resistencia, inteligencia);
     CyMort.inventario.push("ropa");
     CyMort.inventario.push("lanza");
+
     CyMort.Eventos.push("Saludo a un lobo y este lo mordió");
     CyMort.Eventos.push("Llamo a la llama que llama");
 
