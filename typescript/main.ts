@@ -416,10 +416,36 @@ class Genetico
         }
     }
 
-
+    /** psudo pasos para el algoritmo */
     CalcularPuntos( cruces:number, mutaciones:number,  chapas:number, generaciones:number)
     {
-       ///***FALTA***
+        //se sacan todos los parametors de condiguracion de la vista
+       this.conejosDomesticos = parseFloat((<HTMLInputElement> document.getElementById("conejo")).value);
+       /** falta: faltan parametros por obtener de la vista */
+    
+       this.llenarEventosMorty();
+
+       this.GenCero();
+       for(let i=0;i< generaciones;i++)
+       {
+           /** proceso de generaciones */
+           this.cruzar(cruces);
+           this.mutar(mutaciones);
+           this.chapas(chapas);
+
+           this.genAct=this.genSig;
+
+           // se reinicia el array;
+           this.limpiarGenSig();
+           
+           this.calcularAptitud();
+           this.SeleccionarMejores();
+
+           /** se repite el proceso n generaciones */
+       }
+
+       //se imprimen los resultados
+       this.imprimirMejores();
     }
 
 
@@ -492,10 +518,4 @@ function main()
     PonerMorty(2,CyMort);
 }
 
-/*var contenido = main();
-var contenedor = document.getElementById('contenedor-1');
-contenedor.innerHTML= main();
-alert("inicio de programa");
-var G= new Genetico(50,15,1,100,100,10);
-G.CalcularPuntos(35,10,5,60);*/
 
