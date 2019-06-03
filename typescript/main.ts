@@ -1,4 +1,4 @@
-import { ConejoDomestico, ConejoSalvaje, Lobo, Hongo, Fuego, Clavos, Lanza, Arco, Pocion, Escudo, Tigre, Oso } from "./retos";
+import { Reto, ConejoDomestico, ConejoSalvaje, Lobo, Hongo, Fuego, Clavos, Lanza, Arco, Pocion, Escudo, Tigre, Oso } from "./retos";
 /************************ HERRAMIENTAS    */
 /*import * as Collections from 'typescript-collections';*/
 function sleep(milliseconds) {
@@ -213,7 +213,7 @@ class Genetico
             puntaje+=20 - this.genAct[a].resistencia;
             puntaje+=20 - this.genAct[a].inteligencia;
 
-            console.log(this.genAct[a].inventario.find(tieneLanza));
+            //console.log(this.genAct[a].inventario.find(tieneLanza));
             //if(this.genAct[a].inventario.find(tieneLanza)
             /** falta: falta probar la funcion de find para ajustar el puntaje */
             if(this.genAct[a].salud<1){puntaje-=20;}

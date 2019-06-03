@@ -1,6 +1,23 @@
-interface Reto{
-	nombre: string;
-    function interactuar(morty:CyberMorty): void;
+
+/** clase para nodo morty */
+class CyberMorty
+{
+    id:number=-1;
+    salud:number=-1;
+    fuerza:number=-1;
+    resistencia:number=-1;
+    inteligencia:number=-1;
+
+    inventario:string[]=[];
+    Eventos:string[]=[];
+
+    puntaje:number;
+
+}
+
+export interface Reto{
+	
+    interactuar(morty:CyberMorty): void;
 }
 
 
@@ -14,9 +31,9 @@ export class ConejoDomestico implements Reto{
 		let nombre = "Conejo Domestico";
 	}
 
-    public function interactuar(morty:CyberMorty){
+    interactuar(morty:CyberMorty){
         
-    	morty.Eventos.push("Morty " + morty.numbero + " se comió al conejo y tomó su piel");
+    	morty.Eventos.push("Morty " + morty.id + " se comió al conejo y tomó su piel");
     	morty.inventario.push("piel de conejo");
 
     }
@@ -33,7 +50,7 @@ export class ConejoSalvaje implements Reto{
 		let nombre = "Conejo Salvaje";
 	}
 
-    public function interactuar(morty:CyberMorty){
+    interactuar(morty:CyberMorty){
         
 
     	let saludConejo = 6;
@@ -49,7 +66,7 @@ export class ConejoSalvaje implements Reto{
     	}while(saludConejo > 0  && morty.salud > 0);
 
     	if(saludConejo <= 0){
-    		morty.Eventos.push("Morty " + morty.numbero + " lucho contra el Conejo Salvaje y lo asesinó");
+    		morty.Eventos.push("Morty " + morty.id + " lucho contra el Conejo Salvaje y lo asesinó");
     	}
 
 
@@ -70,7 +87,7 @@ export class Tigre implements Reto{
 		let nombre = "Tigre";
 	}
 
-    public function interactuar(morty:CyberMorty){
+    interactuar(morty:CyberMorty){
         
 
     	let saludTigre = 25;
@@ -86,7 +103,7 @@ export class Tigre implements Reto{
     	}while(saludTigre > 0  && morty.salud > 0);
 
     	if(saludTigre <= 0){
-    		morty.Eventos.push("Morty " + morty.numbero + " lucho contra el Tigre Feroz y lo asesinó");
+    		morty.Eventos.push("Morty " + morty.id + " lucho contra el Tigre Feroz y lo asesinó");
     	}
 
 
@@ -107,7 +124,7 @@ export class Oso implements Reto{
 		let nombre = "Oso";
 	}
 
-    public function interactuar(morty:CyberMorty){
+    interactuar(morty:CyberMorty){
         
  
 
@@ -124,7 +141,7 @@ export class Oso implements Reto{
     	}while(saludOso > 0  && morty.salud > 0);
 
     	if(saludOso <= 0){
-    		morty.Eventos.push("Morty " + morty.numbero + " lucho contra el Oso y lo asesinó");
+    		morty.Eventos.push("Morty " + morty.id + " lucho contra el Oso y lo asesinó");
     	}
 
 
@@ -144,7 +161,7 @@ export class Lobo implements Reto{
         let nombre = "Lobo";
     }
 
-    public function interactuar(morty:CyberMorty){
+    interactuar(morty:CyberMorty){
         
  
 
@@ -161,7 +178,7 @@ export class Lobo implements Reto{
         }while(saludLobo > 0  && morty.salud > 0);
 
         if(saludLobo <= 0){
-            morty.Eventos.push("Morty " + morty.numbero + " lucho contra el Lobo y lo asesinó");
+            morty.Eventos.push("Morty " + morty.id + " lucho contra el Lobo y lo asesinó");
         }
 
 
@@ -179,16 +196,16 @@ export class Hongo implements Reto{
 		let nombre = "Hongo";
 	}
 
-    public function interactuar(morty:CyberMorty){
+    interactuar(morty:CyberMorty){
         
     	if(morty.inteligencia > 6){
 
-	    	morty.Eventos.push("Morty " + morty.numbero + " guardó un hongo");
+	    	morty.Eventos.push("Morty " + morty.id + " guardó un hongo");
 	    	morty.inventario.push("Hongo");
 
     	}else{
 
-	    	morty.Eventos.push("Morty " + morty.numbero + " se comió el hongo y perdió vida");
+	    	morty.Eventos.push("Morty " + morty.id + " se comió el hongo y perdió vida");
 	    	morty.salud = morty.salud - 3;
 
     	}
@@ -207,15 +224,15 @@ export class Fuego implements Reto{
 		let nombre = "Fuego";
 	}
 
-    public function interactuar(morty:CyberMorty){
+    interactuar(morty:CyberMorty){
         
     	if(morty.inteligencia > 7){
 
-	    	morty.Eventos.push("Morty " + morty.numbero + " observa el fuego");
+	    	morty.Eventos.push("Morty " + morty.id + " observa el fuego");
 
     	}else{
 
-	    	morty.Eventos.push("Morty " + morty.numbero + " se quemó con el fuego");
+	    	morty.Eventos.push("Morty " + morty.id + " se quemó con el fuego");
 	    	morty.salud = morty.salud - 8;
 
     	}
@@ -234,17 +251,17 @@ export class Clavos implements Reto{
 		let nombre = "Clavos";
 	}
 
-    public function interactuar(morty:CyberMorty){
+    interactuar(morty:CyberMorty){
         
 
     	if(morty.inteligencia > 5){
 
-	    	morty.Eventos.push("Morty " + morty.numbero + " guardó unos clavos peligrosos");
+	    	morty.Eventos.push("Morty " + morty.id + " guardó unos clavos peligrosos");
 	    	morty.inventario.push("Clavos");
 
     	}else{
 
-	    	morty.Eventos.push("Morty " + morty.numbero + " pisó unos clavos y se lastimó");
+	    	morty.Eventos.push("Morty " + morty.id + " pisó unos clavos y se lastimó");
 	    	morty.salud = morty.salud - 3;
 
     	}
@@ -263,10 +280,10 @@ export class Lanza implements Reto{
 		let nombre = "Lanza";
 	}
 
-    public function interactuar(morty:CyberMorty){
+    interactuar(morty:CyberMorty){
         
 
-    	morty.Eventos.push("Morty " + morty.numbero + " enconró una lanza y ahora tiene más fuerza");
+    	morty.Eventos.push("Morty " + morty.id + " enconró una lanza y ahora tiene más fuerza");
     	morty.inventario.push("Lanza");
     	morty.fuerza = morty.fuerza + 3;
 
@@ -284,10 +301,10 @@ export class Arco implements Reto{
 		let nombre = "Arco y Flechas";
 	}
 
-    public function interactuar(morty:CyberMorty){
+    interactuar(morty:CyberMorty){
         
 
-    	morty.Eventos.push("Morty " + morty.numbero + " encontró un arco con flechas y ahora tiene más fuerza");
+    	morty.Eventos.push("Morty " + morty.id + " encontró un arco con flechas y ahora tiene más fuerza");
     	morty.inventario.push("Arco y flechas");
     	morty.fuerza = morty.fuerza + 5;
 
@@ -304,10 +321,10 @@ export class Pocion implements Reto{
 		let nombre = "Poción";
 	}
 
-    public function interactuar(morty:CyberMorty){
+    interactuar(morty:CyberMorty){
         
 
-    	morty.Eventos.push("Morty " + morty.numbero + " bebió una poción que aumentó su salud");
+    	morty.Eventos.push("Morty " + morty.id + " bebió una poción que aumentó su salud");
     	morty.salud = 15;
 
     }
@@ -323,10 +340,10 @@ export class Escudo implements Reto{
 		let nombre = "Escudo";
 	}
 
-    public function interactuar(morty:CyberMorty){
+    interactuar(morty:CyberMorty){
         
 
-    	morty.Eventos.push("Morty " + morty.numbero + " encontró un escudo y ahora tiene más resistencia");
+    	morty.Eventos.push("Morty " + morty.id + " encontró un escudo y ahora tiene más resistencia");
     	morty.inventario.push("Escudo");
     	morty.resistencia = morty.resistencia + 10;
 

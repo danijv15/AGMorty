@@ -1,3 +1,7 @@
+"use strict";
+exports.__esModule = true;
+var retos_1 = require("./retos");
+/************************ HERRAMIENTAS    */
 /*import * as Collections from 'typescript-collections';*/
 function sleep(milliseconds) {
     var start = new Date().getTime();
@@ -10,16 +14,288 @@ function sleep(milliseconds) {
 function RandEntre(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
-/** classes para morty */
+function tieneLanza(lanza) { return lanza === "Lanza"; }
+function tieneArco(arco) { return arco === "Arco"; }
+function tieneEscudo(escudo) { return escudo === "Escudo"; }
+/** clase para nodo morty */
 var CyberMorty = /** @class */ (function () {
-    function CyberMorty(n) {
-        this.salud = 15;
+    function CyberMorty() {
+        this.id = -1;
+        this.salud = -1;
+        this.fuerza = -1;
+        this.resistencia = -1;
+        this.inteligencia = -1;
         this.inventario = [];
         this.Eventos = [];
-        this.numbero = n;
     }
     return CyberMorty;
 }());
+var puntaje = /** @class */ (function () {
+    function puntaje() {
+        this.indice = 0;
+        this.puntaje = 0;
+    }
+    return puntaje;
+}());
+var Genetico = /** @class */ (function () {
+    function Genetico(poblacion) {
+        this.idAcumulativo = -1;
+        /** listas de inventarios, eventos e individuos */
+        //listaInventario:Inventario[]=[];
+        this.listaEventos = [];
+        this.listaResultados = [];
+        this.genAct = [];
+        this.genSig = [];
+        this.mejores = [];
+        this.nPoblacion = poblacion;
+        // llena el vector de resultados
+        for (var _i = 0; _i < poblacion; _i++) {
+            var nuevoCalculo = new puntaje();
+            this.listaResultados.push(nuevoCalculo);
+        }
+        //inicializacion del array de los 9 mejores mortys de todas las generaciones
+        for (var a = 0; a < 9; a++) {
+            var nuevo = new CyberMorty();
+            this.mejores.push(nuevo);
+        }
+    }
+    /** LLenar el vector de Eventos*/
+    Genetico.prototype.llenarEventosMorty = function () {
+        for (var a = 0; a < this.conejosDomesticos; a++) {
+            var evnt = new retos_1.ConejoDomestico();
+            this.listaEventos.push(evnt);
+        }
+        for (var a = 0; a < this.conejosSalvajes; a++) {
+            var evnt = new retos_1.ConejoSalvaje();
+            this.listaEventos.push(evnt);
+        }
+        for (var a = 0; a < this.tigres; a++) {
+            var evnt = new retos_1.Tigre();
+            this.listaEventos.push(evnt);
+        }
+        for (var a = 0; a < this.osos; a++) {
+            var evnt = new retos_1.Oso();
+            this.listaEventos.push(evnt);
+        }
+        for (var a = 0; a < this.lobos; a++) {
+            var evnt = new retos_1.Lobo();
+            this.listaEventos.push(evnt);
+        }
+        for (var a = 0; a < this.hongos; a++) {
+            var evnt = new retos_1.Hongo();
+            this.listaEventos.push(evnt);
+        }
+        for (var a = 0; a < this.fuegos; a++) {
+            var evnt = new retos_1.Fuego();
+            this.listaEventos.push(evnt);
+        }
+        for (var a = 0; a < this.clavos; a++) {
+            var evnt = new retos_1.Clavos();
+            this.listaEventos.push(evnt);
+        }
+        for (var a = 0; a < this.lanzas; a++) {
+            var evnt = new retos_1.Lanza();
+            this.listaEventos.push(evnt);
+        }
+        for (var a = 0; a < this.arcos; a++) {
+            var evnt = new retos_1.Arco();
+            this.listaEventos.push(evnt);
+        }
+        for (var a = 0; a < this.pociones; a++) {
+            var evnt = new retos_1.Pocion();
+            this.listaEventos.push(evnt);
+        }
+        for (var a = 0; a < this.escudos; a++) {
+            var evnt = new retos_1.Escudo();
+            this.listaEventos.push(evnt);
+        }
+    };
+    /** Generacion inicial*/
+    Genetico.prototype.GenCero = function () {
+        for (var i = 0; i < this.nPoblacion; i++) {
+            this.idAcumulativo++;
+            var nuevo = new CyberMorty();
+            nuevo.id = this.idAcumulativo;
+            //SE USAN VALORES ENTRE 1 Y 10 EN TODAS LAS STATS
+            nuevo.salud = RandEntre(1, 10);
+            nuevo.fuerza = RandEntre(1, 10);
+            nuevo.resistencia = RandEntre(1, 10);
+            nuevo.inteligencia = RandEntre(1, 10);
+            this.genAct.push(nuevo);
+        }
+    };
+    /** aptitud de la gen actual **/
+    Genetico.prototype.calcularAptitud = function () {
+        for (var a = 0; a < this.nPoblacion; a++) {
+            for (var i = 0; i < this.nEventos; i++) {
+                var iRand = RandEntre(0, this.totalEventos);
+                // si sigue vivo entonces se enfrenta a un nuevo evento
+                if (this.genAct[a].salud > 0) {
+                    this.listaEventos[iRand].interactuar(this.genAct[a]);
+                }
+            }
+            var puntaje_1 = this.genAct[a].salud;
+            puntaje_1 += 20 - this.genAct[a].fuerza;
+            puntaje_1 += 20 - this.genAct[a].resistencia;
+            puntaje_1 += 20 - this.genAct[a].inteligencia;
+            //console.log(this.genAct[a].inventario.find(tieneLanza));
+            //if(this.genAct[a].inventario.find(tieneLanza)
+            /** falta: falta probar la funcion de find para ajustar el puntaje */
+            if (this.genAct[a].salud < 1) {
+                puntaje_1 -= 20;
+            }
+            this.genAct[a].puntaje = puntaje_1;
+        }
+    };
+    /** cruzar los Mortys y guardarlos en genSig*/
+    Genetico.prototype.cruzar = function (nCruces) {
+        var padre;
+        var madre;
+        for (var i = 0; i < nCruces; i++) {
+            this.idAcumulativo++;
+            // nuevo individuo
+            var nuevo = new CyberMorty();
+            nuevo.id = this.idAcumulativo;
+            // se escojen 2 padres aleatorios
+            padre = RandEntre(0, this.nPoblacion - 1);
+            madre = RandEntre(0, this.nPoblacion - 1);
+            if (RandEntre(0, 1)) {
+                nuevo.salud = this.genAct[padre].salud;
+            }
+            else {
+                nuevo.salud = this.genAct[madre].salud;
+            }
+            if (RandEntre(0, 1)) {
+                nuevo.fuerza = this.genAct[padre].fuerza;
+            }
+            else {
+                nuevo.fuerza = this.genAct[madre].fuerza;
+            }
+            if (RandEntre(0, 1)) {
+                nuevo.resistencia = this.genAct[padre].resistencia;
+            }
+            else {
+                nuevo.resistencia = this.genAct[madre].resistencia;
+            }
+            if (RandEntre(0, 1)) {
+                nuevo.inteligencia = this.genAct[padre].inteligencia;
+            }
+            else {
+                nuevo.inteligencia = this.genAct[madre].inteligencia;
+            }
+            this.genSig.push(nuevo);
+        }
+    };
+    /** muta cierta cantidad de Mortys **/
+    Genetico.prototype.mutar = function (nMutaciones) {
+        var j; // para escoger un individuo
+        for (var i = 0; i < nMutaciones; i++) {
+            this.idAcumulativo++;
+            // nuevo individuo mutado
+            var nuevo = new CyberMorty();
+            nuevo.id = this.idAcumulativo;
+            j = RandEntre(0, this.nPoblacion - 1);
+            /** genera una mutación del 20% en salud **/
+            if (RandEntre(0, 1) && Math.floor(this.genAct[j].salud * 1.20) < 20) // 20 es el valor maximo
+             {
+                nuevo.salud = Math.floor(this.genAct[j].salud * 1.20);
+            }
+            else {
+                nuevo.salud = Math.floor(this.genAct[j].salud * 0.8);
+            }
+            /** genera una mutación del 20% en fuerza **/
+            if (RandEntre(0, 1) && Math.floor(this.genAct[j].fuerza * 1.10) < 20) // 20 es el valor maximo
+             {
+                nuevo.fuerza = Math.floor(this.genAct[j].fuerza * 1.10);
+            }
+            else {
+                nuevo.fuerza = Math.floor(this.genAct[j].fuerza * 0.8);
+            }
+            /** genera una mutación del 20% en resistencia**/
+            if (RandEntre(0, 1) && Math.floor(this.genAct[j].resistencia * 1.20) < 20) // 20 es el valor maximo
+             {
+                nuevo.resistencia = Math.floor(this.genAct[j].resistencia * 1.20);
+            }
+            else {
+                nuevo.resistencia = Math.floor(this.genAct[j].resistencia * 0.8);
+            }
+            /** genera una mutación del 20% en inteligencia**/
+            if (RandEntre(0, 1) && Math.floor(this.genAct[j].inteligencia * 1.20) < 10) // 10 es el valor maximo
+             {
+                nuevo.inteligencia = Math.floor(this.genAct[j].inteligencia * 1.20);
+            }
+            else {
+                nuevo.inteligencia = Math.floor(this.genAct[j].inteligencia * 0.8);
+            }
+            this.genSig.push(nuevo);
+        }
+    };
+    /** método que selecciona lo que tienen estadisticas mas bajas **/
+    Genetico.prototype.chapas = function (nChapas) {
+        // primero se ordenan los mortys
+        this.genAct.sort(function (a, b) {
+            if (a.puntaje < b.puntaje) {
+                return 1;
+            }
+            if (a.puntaje > b.puntaje) {
+                return -1;
+            }
+            return 0;
+        });
+        for (var i = 0, j = this.nPoblacion - 1; i < nChapas; i++) {
+            this.idAcumulativo++;
+            var nuevo = new CyberMorty();
+            nuevo.id = this.idAcumulativo;
+            // se seleccionan los nChapas para la nueva generación
+            nuevo.fuerza = this.genAct[j - i].fuerza;
+            nuevo.inteligencia = this.genAct[j - i].inteligencia;
+            nuevo.resistencia = this.genAct[j - i].resistencia;
+            nuevo.salud = RandEntre(1, 10);
+            this.genSig.push(nuevo);
+        }
+    };
+    /**
+     * Mejorar la forma de seleccion para tener la lista de mejores lo más llena posible. Primero viendo si hay dummies y si no hay entonces si remplazas
+     */
+    Genetico.prototype.SeleccionarMejores = function () {
+        var p;
+        var i;
+        var parar = 0;
+        var a = 0;
+        while (a < 9 && !parar) {
+            //si hay espacio por que existe un dummy
+            if (this.mejores[a].id == -1) {
+                //selecciona el mejor morty de la gen act
+                this.mejores[a] = this.genAct[this.listaResultados[0].indice];
+                parar = 1;
+            }
+            else {
+                // si el mejor de la gen act tiene mejor puntaje que el morty a-esimo mejor
+                if (this.genAct[0].puntaje > this.mejores[a].puntaje) {
+                    this.SeleccionarMejores[a] = this.genAct[0];
+                    parar = 1;
+                }
+            }
+            a++;
+        }
+    };
+    Genetico.prototype.limpiarGenSig = function () {
+        for (var individuo in this.genSig) {
+            individuo = undefined;
+        }
+        this.genSig = [];
+    };
+    Genetico.prototype.imprimirMejores = function () {
+        for (var i = 0; i < 9; i++) {
+            PonerMorty(i + 1, this.mejores[i]);
+        }
+    };
+    Genetico.prototype.CalcularPuntos = function (cruces, mutaciones, chapas, generaciones) {
+        ///***FALTA***
+    };
+    return Genetico;
+}());
+;
 function PonerMorty(indice, morty) {
     var fila = Math.floor(indice / 3) + 1;
     var columna = indice % 3;
@@ -53,267 +329,13 @@ function PonerMorty(indice, morty) {
         evnts += "<li>" + even + "</li>";
     }
     var eventos = "<li class='list-group-item'><h6 class='card-title'>Eventos</h6><ul>" + evnts + "</ul></li></ul>";
-    var card = "<div class='card mb-3' style='max-width: 540px;' > <h5 class='card-title'>CyberMorty " + morty.numbero + "</h5>" + estadisticas + inventario + eventos;
+    var card = "<div class='card mb-3' style='max-width: 540px;' > <h5 class='card-title'>CyberMorty " + morty.id + "</h5>" + estadisticas + inventario + eventos;
     div.innerHTML = card;
 }
-/*Inicio de helicoptero */
-/** nodo para par ordenado xy **/
-var xy = /** @class */ (function () {
-    function xy() {
-        this.x = -1;
-        this.y = -1;
-    }
-    return xy;
-}());
-/** nodo para individuos */
-var xyr = /** @class */ (function () {
-    function xyr() {
-        this.x = -1;
-        this.y = -1;
-        this.r = -1;
-        this.obst = -1;
-    }
-    return xyr;
-}());
-;
-/** nodo para resultados*/
-var resultados = /** @class */ (function () {
-    function resultados() {
-        this.radio = -1;
-        this.obt = -1;
-        this.indice = -1;
-    }
-    return resultados;
-}());
-;
-var Genetico = /** @class */ (function () {
-    function Genetico(poblacion, Obstaculos, tolerancia, x, y, rMin) {
-        /** listas de obstaculos e individuos */
-        this.obstaculos = [];
-        this.genAct = [];
-        this.genSig = [];
-        this.listResultados = [];
-        this.mejores = [];
-        this.nPoblacion = poblacion;
-        this.nObstaculos = Obstaculos;
-        this.obstaculosTolerados = tolerancia;
-        this.maxX = x;
-        this.maxY = y;
-        this.rMinimoAcept = rMin;
-        // llena el vector de resultados
-        //cout<<"se inicializa el vector deresultados"<<endl;
-        for (var _i = 0; _i < poblacion; _i++) {
-            var nuevoCalculo = new resultados();
-            this.listResultados.push(nuevoCalculo);
-        }
-        for (var a = 0; a < 10; a++) {
-            var nuevo = new xyr();
-            this.mejores.push(nuevo);
-        }
-        /*console.log("Constructor->listResuldados");
-        console.log(this.listResultados);*/
-    }
-    Genetico.prototype.llenarObstaculos = function () {
-        //cout<<"Se inicia la creacion de obstaculos"<<endl;
-        for (var _i = 0; _i < this.nObstaculos; _i++) {
-            var nuevoObst = new xy;
-            nuevoObst.x = RandEntre(0, this.maxX - 1);
-            nuevoObst.y = RandEntre(0, this.maxY) - 1;
-            this.obstaculos.push(nuevoObst);
-        }
-        //cout<<"Se termina la creacion de obstaculos"<<endl;
-    };
-    /** generacion inicial*/
-    Genetico.prototype.GenCero = function () {
-        for (var i = 0; i < this.nPoblacion; i++) {
-            var nuevo = new xyr();
-            nuevo.x = RandEntre(0, this.maxX - 1);
-            nuevo.y = RandEntre(0, this.maxY - 1);
-            nuevo.r = RandEntre(0, this.maxX - 1);
-            this.genAct.push(nuevo);
-        }
-    };
-    /** aptitud de la gen actual **/
-    Genetico.prototype.calcularAptitud = function () {
-        var x1;
-        var x2;
-        var y1;
-        var y2;
-        var XX;
-        var YY;
-        for (var i = 0; i < this.nPoblacion; i++) {
-            this.listResultados[i].indice = i;
-            this.listResultados[i].radio = this.genAct[i].r;
-            //par ordenado de xy para el calculo de distancia
-            x1 = this.genAct[i].x;
-            y1 = this.genAct[i].y;
-            for (var a = 0; a < this.nObstaculos; a++) {
-                x2 = this.obstaculos[a].x;
-                y2 = this.obstaculos[a].y;
-                XX = Math.pow((x2 - x1), 2);
-                YY = Math.pow((y2 - y1), 2);
-                var distacia = Math.sqrt(XX + YY);
-                if (distacia <= this.genAct[i].r) {
-                    this.listResultados[i].obt = this.listResultados[i].obt + 1;
-                }
-            }
-        }
-    };
-    /** cruzar los individuos y guardados en genSig*/
-    Genetico.prototype.cruzar = function (nCruces) {
-        var padre;
-        var madre;
-        for (var i = 0; i < nCruces; i++) {
-            // nuevo individuo
-            var nuevo = new xyr();
-            // se escojen 2 padres aleatorios
-            padre = RandEntre(0, this.nPoblacion - 1);
-            madre = RandEntre(0, this.nPoblacion - 1);
-            nuevo.x = this.genAct[padre].x;
-            nuevo.y = this.genAct[madre].y;
-            nuevo.r = Math.floor((this.genAct[padre].r + this.genAct[madre].r) / 2);
-            this.genSig.push(nuevo);
-        }
-    };
-    /** muta cierta cantidad de la población **/
-    Genetico.prototype.mutar = function (nMutaciones) {
-        var j; // para escoger un individuo
-        var xVar, yVar, rVar; // variables para saber si creece o decrece el valor
-        for (var i = 0; i < nMutaciones; i++) {
-            // nuevo individuo mutado
-            var nuevo = new xyr();
-            j = RandEntre(0, this.nPoblacion - 1);
-            /** genera una mutación del 10% en X **/
-            if (RandEntre(0, 1) && Math.floor(this.genAct[j].x * 1.10) < this.maxX) // 1 para incrementar
-             {
-                nuevo.x = Math.floor(this.genAct[j].x * 1.10);
-            }
-            else {
-                nuevo.x = Math.floor(this.genAct[j].x * 0.9);
-            }
-            /** genera una mutación del 10% en Y **/
-            if (RandEntre(0, 1) && Math.floor(this.genAct[j].y * 1.10) < this.maxY) {
-                nuevo.y = Math.floor(this.genAct[j].y * 1.10);
-            }
-            else {
-                nuevo.y = Math.floor(this.genAct[j].y * 0.9);
-            }
-            /** genera una mutación del 10% en R **/
-            if (RandEntre(0, 1) && Math.floor(this.genAct[j].r * 1.10) < this.maxX) {
-                nuevo.r = Math.floor(this.genAct[j].r * 1.10);
-            }
-            else {
-                nuevo.r = Math.floor(this.genAct[j].r * 0.9);
-            }
-            this.genSig.push(nuevo);
-        }
-    };
-    /** método que selecciona lo que tienen área más pequeña **/
-    Genetico.prototype.chapas = function (nChapas) {
-        // primero se ordena el vector de resultados
-        this.listResultados.sort(function (a, b) {
-            if (a.radio < b.radio) {
-                return 1;
-            }
-            if (a.radio > b.radio) {
-                return -1;
-            }
-            return 0;
-        });
-        for (var i = 0, j = this.nPoblacion - 1; i < nChapas; i++) {
-            var nuevo = new xyr();
-            // se seleccionan los nChapas para la nueva generación
-            nuevo.x = this.genAct[this.listResultados[j - i].indice].x;
-            nuevo.y = this.genAct[this.listResultados[j - i].indice].y;
-            nuevo.r = this.genAct[this.listResultados[j - i].indice].r;
-            this.genSig.push(nuevo);
-        }
-    };
-    /**
-     * Mejorar la forma de seleccion para tener la lista de mejores lo más llena posible. Primero viendo si hay dummies y si no hay entonces si remplazas
-     */
-    Genetico.prototype.SeleccionarMejores = function () {
-        var r;
-        var i;
-        for (var a = 0; a < 10; a++) {
-            r = this.listResultados[a].radio;
-            if (r > this.rMinimoAcept && this.listResultados[a].obt <= this.obstaculosTolerados) {
-                i = 0;
-                while (i < 10 && (this.listResultados[a].radio <= this.mejores[i].r || this.listResultados[1].obt <= this.mejores[i].obst)) {
-                    i++;
-                }
-                if (i < 10) {
-                    this.mejores[i].x = this.genAct[this.listResultados[a].indice].x;
-                    this.mejores[i].y = this.genAct[this.listResultados[a].indice].y;
-                    this.mejores[i].r = this.genAct[this.listResultados[a].indice].r;
-                    this.mejores[i].obst = this.listResultados[a].obt;
-                    console.log("Candidado (" + this.mejores[i].x + ", " + this.mejores[i].y + ") r: " + this.mejores[i].r + " obst: " + this.mejores[i].obst);
-                }
-            }
-        }
-    };
-    Genetico.prototype.limpiarGenSig = function () {
-        for (var invividuo in this.genSig) {
-            invividuo = undefined;
-        }
-        this.genSig = [];
-    };
-    Genetico.prototype.imprimirMejores = function () {
-        var temp;
-        for (var a = 2; a < 10; a++) {
-            for (var b = 0; b < 9; b++) {
-                if ((this.mejores[b].r / this.mejores[b].obst) < (this.mejores[b + 1].r / this.mejores[b + 1].obst)) {
-                    temp = this.mejores[b];
-                    this.mejores[b] = this.mejores[b + 1];
-                    this.mejores[b + 1] = temp;
-                }
-            }
-        }
-        for (var i = 0; i < 10; i++) {
-            console.log("-> " + i + "- (" + this.mejores[i].x + ", " + this.mejores[i].y + ") r: " + this.mejores[i].r + " obstaculos: " + this.mejores[i].obst + "\n");
-        }
-    };
-    Genetico.prototype.CalcularPuntos = function (cruces, mutaciones, chapas, generaciones) {
-        this.llenarObstaculos();
-        /** primera generacion de individuos */
-        this.GenCero();
-        /** se evaluan y escogen los mejores individuos**/
-        this.calcularAptitud();
-        this.SeleccionarMejores();
-        /*console.log("Gen 0");
-        console.log(this.genAct);*/
-        for (var i = 0; i < generaciones; i++) {
-            /** se genera la siguiente generación **/
-            /*console.log("Generacion "+i);*/
-            this.cruzar(cruces);
-            this.mutar(mutaciones);
-            this.chapas(chapas);
-            // Se asigna la nueva generación
-            this.genAct = this.genSig;
-            /*if(i%5==0)
-            {
-                console.log("CalcularPuntos->GenAct");
-                console.log(this.genAct);
-            }*/
-            // Se eliminan los viejos individuos
-            this.limpiarGenSig();
-            this.calcularAptitud();
-            this.SeleccionarMejores();
-            /** se repite el proceso n veces */
-        }
-        console.log("** Las mejores opciones son:\n");
-        this.imprimirMejores();
-    };
-    return Genetico;
-}());
-;
-/* Fin de helicoptero */
 function main() {
-    var div = document.getElementById(1 + "-" + 2);
-    div.innerHTML = "<div class='bg-dark' role='status'> </div>";
-    sleep(500);
-    var CyMort = new CyberMorty(20);
-    CyMort.fuerza = 15;
+    var CyMort = new CyberMorty();
+    CyMort.salud = 7;
+    CyMort.fuerza = 10;
     CyMort.inteligencia = 3;
     CyMort.resistencia = 5;
     CyMort.inventario.push("ropa");
