@@ -28,7 +28,7 @@ export class ConejoDomestico implements Reto{
 
 	constructor() {
 	
-		let nombre = "Conejo Domestico";
+		
 	}
 
     interactuar(morty:CyberMorty){
@@ -47,7 +47,7 @@ export class ConejoSalvaje implements Reto{
 
 	constructor() {
 	
-		let nombre = "Conejo Salvaje";
+		
 	}
 
     interactuar(morty:CyberMorty){
@@ -84,7 +84,7 @@ export class Tigre implements Reto{
 
 	constructor() {
 	
-		let nombre = "Tigre";
+		
 	}
 
     interactuar(morty:CyberMorty){
@@ -121,7 +121,7 @@ export class Oso implements Reto{
 
 	constructor() {
 	
-		let nombre = "Oso";
+		
 	}
 
     interactuar(morty:CyberMorty){
@@ -158,7 +158,7 @@ export class Lobo implements Reto{
 
     constructor() {
     
-        let nombre = "Lobo";
+    
     }
 
     interactuar(morty:CyberMorty){
@@ -193,7 +193,7 @@ export class Hongo implements Reto{
 
 	constructor() {
 	
-		let nombre = "Hongo";
+		
 	}
 
     interactuar(morty:CyberMorty){
@@ -221,7 +221,7 @@ export class Fuego implements Reto{
 
 	constructor() {
 	
-		let nombre = "Fuego";
+		
 	}
 
     interactuar(morty:CyberMorty){
@@ -248,7 +248,7 @@ export class Clavos implements Reto{
 
 	constructor() {
 	
-		let nombre = "Clavos";
+		
 	}
 
     interactuar(morty:CyberMorty){
@@ -277,7 +277,7 @@ export class Lanza implements Reto{
 
 	constructor() {
 	
-		let nombre = "Lanza";
+		
 	}
 
     interactuar(morty:CyberMorty){
@@ -298,7 +298,7 @@ export class Arco implements Reto{
 
 	constructor() {
 	
-		let nombre = "Arco y Flechas";
+		
 	}
 
     interactuar(morty:CyberMorty){
@@ -318,7 +318,7 @@ export class Pocion implements Reto{
 
 	constructor() {
 	
-		let nombre = "Poción";
+		
 	}
 
     interactuar(morty:CyberMorty){
@@ -337,7 +337,7 @@ export class Escudo implements Reto{
 
 	constructor() {
 	
-		let nombre = "Escudo";
+		
 	}
 
     interactuar(morty:CyberMorty){
