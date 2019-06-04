@@ -15,7 +15,6 @@ var CyberMorty = /** @class */ (function () {
 }());
 var ConejoDomestico = /** @class */ (function () {
     function ConejoDomestico() {
-        var nombre = "Conejo Domestico";
     }
     ConejoDomestico.prototype.interactuar = function (morty) {
         morty.Eventos.push("Morty " + morty.id + " se comió al conejo y tomó su piel");
@@ -26,7 +25,6 @@ var ConejoDomestico = /** @class */ (function () {
 exports.ConejoDomestico = ConejoDomestico;
 var ConejoSalvaje = /** @class */ (function () {
     function ConejoSalvaje() {
-        var nombre = "Conejo Salvaje";
     }
     ConejoSalvaje.prototype.interactuar = function (morty) {
         var saludConejo = 6;
@@ -48,7 +46,6 @@ var ConejoSalvaje = /** @class */ (function () {
 exports.ConejoSalvaje = ConejoSalvaje;
 var Tigre = /** @class */ (function () {
     function Tigre() {
-        var nombre = "Tigre";
     }
     Tigre.prototype.interactuar = function (morty) {
         var saludTigre = 25;
@@ -70,7 +67,6 @@ var Tigre = /** @class */ (function () {
 exports.Tigre = Tigre;
 var Oso = /** @class */ (function () {
     function Oso() {
-        var nombre = "Oso";
     }
     Oso.prototype.interactuar = function (morty) {
         var saludOso = 35;
@@ -91,7 +87,6 @@ var Oso = /** @class */ (function () {
 exports.Oso = Oso;
 var Lobo = /** @class */ (function () {
     function Lobo() {
-        var nombre = "Lobo";
     }
     Lobo.prototype.interactuar = function (morty) {
         var saludLobo = 35;
@@ -112,7 +107,6 @@ var Lobo = /** @class */ (function () {
 exports.Lobo = Lobo;
 var Hongo = /** @class */ (function () {
     function Hongo() {
-        var nombre = "Hongo";
     }
     Hongo.prototype.interactuar = function (morty) {
         if (morty.inteligencia > 6) {
@@ -129,7 +123,6 @@ var Hongo = /** @class */ (function () {
 exports.Hongo = Hongo;
 var Fuego = /** @class */ (function () {
     function Fuego() {
-        var nombre = "Fuego";
     }
     Fuego.prototype.interactuar = function (morty) {
         if (morty.inteligencia > 7) {
@@ -145,7 +138,6 @@ var Fuego = /** @class */ (function () {
 exports.Fuego = Fuego;
 var Clavos = /** @class */ (function () {
     function Clavos() {
-        var nombre = "Clavos";
     }
     Clavos.prototype.interactuar = function (morty) {
         if (morty.inteligencia > 5) {
@@ -162,7 +154,6 @@ var Clavos = /** @class */ (function () {
 exports.Clavos = Clavos;
 var Lanza = /** @class */ (function () {
     function Lanza() {
-        var nombre = "Lanza";
     }
     Lanza.prototype.interactuar = function (morty) {
         morty.Eventos.push("Morty " + morty.id + " enconró una lanza y ahora tiene más fuerza");
@@ -174,7 +165,6 @@ var Lanza = /** @class */ (function () {
 exports.Lanza = Lanza;
 var Arco = /** @class */ (function () {
     function Arco() {
-        var nombre = "Arco y Flechas";
     }
     Arco.prototype.interactuar = function (morty) {
         morty.Eventos.push("Morty " + morty.id + " encontró un arco con flechas y ahora tiene más fuerza");
@@ -186,7 +176,6 @@ var Arco = /** @class */ (function () {
 exports.Arco = Arco;
 var Pocion = /** @class */ (function () {
     function Pocion() {
-        var nombre = "Poción";
     }
     Pocion.prototype.interactuar = function (morty) {
         morty.Eventos.push("Morty " + morty.id + " bebió una poción que aumentó su salud");
@@ -197,7 +186,6 @@ var Pocion = /** @class */ (function () {
 exports.Pocion = Pocion;
 var Escudo = /** @class */ (function () {
     function Escudo() {
-        var nombre = "Escudo";
     }
     Escudo.prototype.interactuar = function (morty) {
         morty.Eventos.push("Morty " + morty.id + " encontró un escudo y ahora tiene más resistencia");
