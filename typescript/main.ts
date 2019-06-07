@@ -51,6 +51,7 @@ class Genetico
 {
     /**Variables de cantidad*/
     nPoblacion:number;
+    nGeneraciones:number;
     nEventos:number;
 
     /** cantidad de eventos de cada tipo */
@@ -80,9 +81,10 @@ class Genetico
     genSig:CyberMorty[]=[];
     mejores:CyberMorty[]=[];
 
-    constructor(poblacion:number)
+    constructor(poblacion,generaciones)
     {
         this.nPoblacion=poblacion;
+        this.nGeneraciones= generaciones;
 
         // llena el vector de resultados
 
@@ -275,7 +277,6 @@ class Genetico
     /** muta cierta cantidad de Mortys **/
     mutar(nMutaciones:number)
     {
-
         let j;// para escoger un individuo
 
         for (let i:number = 0; i< nMutaciones; i++)
@@ -365,6 +366,8 @@ class Genetico
             nuevo.salud= RandEntre(1,10);
             this.genSig.push(nuevo);
         }
+        console.log("Primero de cada gen");
+        console.log(this.genAct[0]);
     }
 
 
@@ -417,16 +420,13 @@ class Genetico
     }
 
     /** psudo pasos para el algoritmo */
-    CalcularPuntos( cruces:number, mutaciones:number,  chapas:number, generaciones:number)
+    IniciarSimulaciones( cruces:number, mutaciones:number,  chapas:number)
     {
-        //se sacan todos los parametors de condiguracion de la vista
-       this.conejosDomesticos = parseFloat((<HTMLInputElement> document.getElementById("conejo")).value);
-       /** falta: faltan parametros por obtener de la vista */
-    
+        alert("Iniciar las simulaciones");
        this.llenarEventosMorty();
 
        this.GenCero();
-       for(let i=0;i< generaciones;i++)
+       for(let i=0;i< this.nGeneraciones;i++)
        {
            /** proceso de generaciones */
            this.cruzar(cruces);
@@ -503,19 +503,45 @@ function PonerMorty(indice:number, morty:CyberMorty)
 
 function main()
 {
+/** Seteo de las variables de las para iniciar el procesamiento */
+    /** obtengo las variables de la vista */
+    let generaciones= 10;//parseFloat((<HTMLInputElement> document.getElementById("generaciones")).value);
+    let individuosPorGen= 10;//parseFloat((<HTMLInputElement> document.getElementById("n-individuos")).value);
+    let cruces= 5;//parseFloat((<HTMLInputElement> document.getElementById("mescla")).value);
+    let mutaciones=3;//parseFloat((<HTMLInputElement> document.getElementById("mutacion")).value);
+    let chapas= 2;//parseFloat((<HTMLInputElement> document.getElementById("chapa")).value);
+    // Inicio de la clase
+    let simulacion= new Genetico(10,10);
+
+    simulacion.conejosDomesticos = 2;//parseFloat((<HTMLInputElement> document.getElementById("ConejoDomestico")).value);
+    simulacion.conejosDomesticos=2;//parseFloat((<HTMLInputElement> document.getElementById("ConejoSalvaje")).value);
+    simulacion.tigres= 1;//parseFloat((<HTMLInputElement> document.getElementById("Tigre")).value);
+    simulacion.osos= 1;//parseFloat((<HTMLInputElement> document.getElementById("Oso")).value);
+    simulacion.lobos = 1;//parseFloat((<HTMLInputElement> document.getElementById("Lobo")).value);
+    simulacion.hongos= 2;//parseFloat((<HTMLInputElement> document.getElementById("Hongo")).value);
+    simulacion.fuegos= 2;//parseFloat((<HTMLInputElement> document.getElementById("Fuego")).value);
+    simulacion.clavos= 1;//parseFloat((<HTMLInputElement> document.getElementById("Clavos")).value);
+    simulacion.lanzas= 1;//parseFloat((<HTMLInputElement> document.getElementById("Lanza")).value);
+    simulacion.arcos = 1;//parseFloat((<HTMLInputElement> document.getElementById("Arco")).value);
+    simulacion.pociones= 1;//parseFloat((<HTMLInputElement> document.getElementById("Pocion")).value);
+    simulacion.escudos = 1;//parseFloat((<HTMLInputElement> document.getElementById("Escudo")).value);
+
+    console.log(simulacion);
+/** inicio de las simulacion */
+    //simulacion.IniciarSimulaciones(cruces,mutaciones,chapas);
+
+    console.log("hola");  
+
     let CyMort= new CyberMorty();
-    CyMort.salud = 7;
+    /*CyMort.salud = 7;
     CyMort.fuerza=10;
     CyMort.inteligencia=3;
     CyMort.resistencia=5;
-
     CyMort.inventario.push("ropa");
     CyMort.inventario.push("lanza");
-
     CyMort.Eventos.push("Saludo a un lobo y este lo mordió");
     CyMort.Eventos.push("Llamo a la llama que llama");
-
-    PonerMorty(2,CyMort);
+    PonerMorty(2,CyMort);*/
 }
 
 

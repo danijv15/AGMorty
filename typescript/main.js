@@ -38,7 +38,7 @@ var puntaje = /** @class */ (function () {
     return puntaje;
 }());
 var Genetico = /** @class */ (function () {
-    function Genetico(poblacion) {
+    function Genetico(poblacion, generaciones) {
         this.idAcumulativo = -1;
         /** listas de inventarios, eventos e individuos */
         //listaInventario:Inventario[]=[];
@@ -48,6 +48,7 @@ var Genetico = /** @class */ (function () {
         this.genSig = [];
         this.mejores = [];
         this.nPoblacion = poblacion;
+        this.nGeneraciones = generaciones;
         // llena el vector de resultados
         for (var _i = 0; _i < poblacion; _i++) {
             var nuevoCalculo = new puntaje();
@@ -253,6 +254,8 @@ var Genetico = /** @class */ (function () {
             nuevo.salud = RandEntre(1, 10);
             this.genSig.push(nuevo);
         }
+        console.log("Primero de cada gen");
+        console.log(this.genAct[0]);
     };
     /**
      * Mejorar la forma de seleccion para tener la lista de mejores lo más llena posible. Primero viendo si hay dummies y si no hay entonces si remplazas
@@ -290,8 +293,25 @@ var Genetico = /** @class */ (function () {
             PonerMorty(i + 1, this.mejores[i]);
         }
     };
-    Genetico.prototype.CalcularPuntos = function (cruces, mutaciones, chapas, generaciones) {
-        ///***FALTA***
+    /** psudo pasos para el algoritmo */
+    Genetico.prototype.IniciarSimulaciones = function (cruces, mutaciones, chapas) {
+        alert("Iniciar las simulaciones");
+        this.llenarEventosMorty();
+        this.GenCero();
+        for (var i = 0; i < this.nGeneraciones; i++) {
+            /** proceso de generaciones */
+            this.cruzar(cruces);
+            this.mutar(mutaciones);
+            this.chapas(chapas);
+            this.genAct = this.genSig;
+            // se reinicia el array;
+            this.limpiarGenSig();
+            this.calcularAptitud();
+            this.SeleccionarMejores();
+            /** se repite el proceso n generaciones */
+        }
+        //se imprimen los resultados
+        this.imprimirMejores();
     };
     return Genetico;
 }());
@@ -333,20 +353,39 @@ function PonerMorty(indice, morty) {
     div.innerHTML = card;
 }
 function main() {
+    /** Seteo de las variables de las para iniciar el procesamiento */
+    /** obtengo las variables de la vista */
+    var generaciones = 10; //parseFloat((<HTMLInputElement> document.getElementById("generaciones")).value);
+    var individuosPorGen = 10; //parseFloat((<HTMLInputElement> document.getElementById("n-individuos")).value);
+    var cruces = 5; //parseFloat((<HTMLInputElement> document.getElementById("mescla")).value);
+    var mutaciones = 3; //parseFloat((<HTMLInputElement> document.getElementById("mutacion")).value);
+    var chapas = 2; //parseFloat((<HTMLInputElement> document.getElementById("chapa")).value);
+    // Inicio de la clase
+    var simulacion = new Genetico(10, 10);
+    simulacion.conejosDomesticos = 2; //parseFloat((<HTMLInputElement> document.getElementById("ConejoDomestico")).value);
+    simulacion.conejosDomesticos = 2; //parseFloat((<HTMLInputElement> document.getElementById("ConejoSalvaje")).value);
+    simulacion.tigres = 1; //parseFloat((<HTMLInputElement> document.getElementById("Tigre")).value);
+    simulacion.osos = 1; //parseFloat((<HTMLInputElement> document.getElementById("Oso")).value);
+    simulacion.lobos = 1; //parseFloat((<HTMLInputElement> document.getElementById("Lobo")).value);
+    simulacion.hongos = 2; //parseFloat((<HTMLInputElement> document.getElementById("Hongo")).value);
+    simulacion.fuegos = 2; //parseFloat((<HTMLInputElement> document.getElementById("Fuego")).value);
+    simulacion.clavos = 1; //parseFloat((<HTMLInputElement> document.getElementById("Clavos")).value);
+    simulacion.lanzas = 1; //parseFloat((<HTMLInputElement> document.getElementById("Lanza")).value);
+    simulacion.arcos = 1; //parseFloat((<HTMLInputElement> document.getElementById("Arco")).value);
+    simulacion.pociones = 1; //parseFloat((<HTMLInputElement> document.getElementById("Pocion")).value);
+    simulacion.escudos = 1; //parseFloat((<HTMLInputElement> document.getElementById("Escudo")).value);
+    console.log(simulacion);
+    /** inicio de las simulacion */
+    //simulacion.IniciarSimulaciones(cruces,mutaciones,chapas);
+    console.log("hola");
     var CyMort = new CyberMorty();
-    CyMort.salud = 7;
-    CyMort.fuerza = 10;
-    CyMort.inteligencia = 3;
-    CyMort.resistencia = 5;
+    /*CyMort.salud = 7;
+    CyMort.fuerza=10;
+    CyMort.inteligencia=3;
+    CyMort.resistencia=5;
     CyMort.inventario.push("ropa");
     CyMort.inventario.push("lanza");
     CyMort.Eventos.push("Saludo a un lobo y este lo mordió");
     CyMort.Eventos.push("Llamo a la llama que llama");
-    PonerMorty(2, CyMort);
+    PonerMorty(2,CyMort);*/
 }
-/*var contenido = main();
-var contenedor = document.getElementById('contenedor-1');
-contenedor.innerHTML= main();
-alert("inicio de programa");
-var G= new Genetico(50,15,1,100,100,10);
-G.CalcularPuntos(35,10,5,60);*/
